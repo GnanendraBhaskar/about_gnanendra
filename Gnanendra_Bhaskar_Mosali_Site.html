@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gnanendra Bhaskar Mosali — UI/UX Designer &amp; Front-End Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0b1220;
+    --ink-soft:#475467;
+    --ink-faint:#98a2b3;
+    --bg:#ffffff;
+    --bg-tint-a:#f4f7fb;
+    --bg-tint-b:#faf7f0;
+    --navy:#0b2545;
+    --navy-2:#1d4ed8;
+    --brass:#a9822f;
+    --brass-soft:#d9c48f;
+    --emerald:#0f9d78;
+    --amber:#c98a1f;
+    --rose:#c2547a;
+    --border:#e6e8ee;
+    --radius:14px;
+    --shadow-sm: 0 1px 2px rgba(16,24,40,0.05);
+    --shadow-md: 0 6px 16px -4px rgba(16,24,40,0.08), 0 16px 32px -12px rgba(16,24,40,0.10);
+    --shadow-lg: 0 10px 24px -8px rgba(16,24,40,0.12), 0 30px 60px -16px rgba(16,24,40,0.18);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'Inter',sans-serif; font-size:16px; line-height:1.65;
+    -webkit-font-smoothing:antialiased; cursor:default;
+  }
+  .serif{ font-family:'Newsreader', serif; }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+  a{ color:inherit; }
+  ::selection{ background:rgba(169,130,47,0.2); }
+  img,svg{ display:block; }
+
+  /* ---------- progress bar ---------- */
+  #progress{ position:fixed; top:0; left:0; height:3px; width:0%; z-index:200;
+    background:linear-gradient(90deg,var(--navy-2),var(--brass)); transition:width .1s linear; }
+
+  /* ---------- custom cursor ---------- */
+  #cursor-ring{
+    position:fixed; width:34px; height:34px; border-radius:50%; border:1.5px solid rgba(169,130,47,0.55);
+    pointer-events:none; z-index:999; transform:translate(-50%,-50%); transition:width .2s,height .2s,border-color .2s,opacity .2s;
+    opacity:0;
+  }
+  #cursor-dot{
+    position:fixed; width:6px; height:6px; border-radius:50%; background:var(--brass);
+    pointer-events:none; z-index:999; transform:translate(-50%,-50%); opacity:0;
+  }
+  @media (pointer:fine){ #cursor-ring, #cursor-dot{ opacity:1; } body{ cursor:none; } a, button{ cursor:none; } }
+
+  /* ---------- nav ---------- */
+  nav{
+    position:sticky; top:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 6vw;
+    background:rgba(255,255,255,0.85);
+    backdrop-filter:blur(14px) saturate(160%);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-brand{ display:flex; align-items:center; gap:11px; }
+  .nav-brand .mark{
+    width:36px;height:36px;border-radius:50%;
+    background:linear-gradient(155deg, var(--navy), #16345e);
+    color:#fff; display:flex; align-items:center; justify-content:center;
+    font-family:'Newsreader',serif; font-weight:600; font-size:14.5px;
+    box-shadow:0 0 0 3px rgba(169,130,47,0.16);
+  }
+  .nav-brand .name{ font-family:'Newsreader',serif; font-weight:600; font-size:16.5px; }
+  .nav-brand .role{ font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--brass); text-transform:uppercase; letter-spacing:0.07em; }
+  .nav-links{ display:flex; gap:34px; }
+  .nav-links a{
+    font-size:13.5px; font-weight:500; text-decoration:none; color:var(--ink-soft);
+    position:relative; padding-bottom:4px;
+  }
+  .nav-links a::after{ content:""; position:absolute; left:0; right:100%; bottom:0; height:1.5px; background:var(--brass); transition:right .25s ease; }
+  .nav-links a:hover{ color:var(--ink); }
+  .nav-links a:hover::after{ right:0; }
+  .nav-cta{
+    font-size:13px; font-weight:600; text-decoration:none;
+    padding:10px 20px; border-radius:6px; color:#fff; background:var(--navy);
+    transition:background .18s ease, box-shadow .18s ease, transform .18s ease;
+    box-shadow:var(--shadow-sm);
+  }
+  .nav-cta:hover{ background:#16345e; transform:translateY(-1px); box-shadow:var(--shadow-md); }
+  @media (max-width:840px){ .nav-links{ display:none; } }
+
+  section{ padding:130px 6vw; position:relative; z-index:2; }
+  .section-inner{ max-width:1120px; margin:0 auto; }
+
+  .kicker{ display:flex; align-items:center; gap:12px; margin-bottom:18px; }
+  .kicker .idx{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--brass); border:1px solid var(--brass-soft); border-radius:4px; padding:3px 8px; }
+  .kicker .label{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:0.14em; color:var(--ink-faint); }
+
+  h2.title{ font-family:'Newsreader',serif; font-weight:600; font-size:clamp(30px,3.6vw,44px); margin:0 0 50px; letter-spacing:-0.015em; color:var(--ink); }
+
+  /* ---------- hero ---------- */
+  .hero{
+    min-height:100vh; display:flex; align-items:center;
+    padding:150px 6vw 60px;
+    position:relative; overflow:hidden;
+    background:radial-gradient(1200px 700px at 78% 8%, rgba(169,130,47,0.10), transparent 60%),
+               radial-gradient(900px 600px at 10% 90%, rgba(29,78,216,0.06), transparent 60%);
+  }
+  .hero-inner{ max-width:1120px; margin:0 auto; position:relative; width:100%; display:grid; grid-template-columns:1.15fr 0.85fr; gap:40px; align-items:center; }
+  .eyebrow-line{
+    font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--brass); margin-bottom:26px; display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow-line .rule{ width:34px; height:1px; background:var(--brass); opacity:0.7; }
+  .hero h1{
+    font-family:'Newsreader',serif; font-style:normal; font-weight:600;
+    font-size:clamp(44px,6.4vw,80px);
+    line-height:1.03; letter-spacing:-0.02em; margin:0 0 26px; color:var(--ink);
+  }
+  .hero h1 .grad{
+    background:linear-gradient(100deg, var(--navy), var(--navy-2) 45%, var(--brass) 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent; font-style:italic;
+  }
+  .hero h1 .rv{ display:inline-block; opacity:0; transform:translateY(22px); filter:blur(6px); animation:rv .8s cubic-bezier(.2,.7,.2,1) forwards; }
+  @keyframes rv{ to{ opacity:1; transform:translateY(0); filter:blur(0);} }
+
+  .hero-sub{ font-size:18px; color:var(--ink-soft); max-width:50ch; margin:0 0 40px;
+    opacity:0; animation:fadeUp .8s ease .68s forwards; }
+  .hero-sub strong{ color:var(--ink); font-weight:600; }
+  .hero-actions{ display:flex; gap:14px; flex-wrap:wrap; opacity:0; animation:fadeUp .8s ease .82s forwards; }
+  @keyframes fadeUp{ from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:translateY(0);} }
+
+  .btn{
+    font-size:13.5px; font-weight:600; text-decoration:none;
+    padding:15px 28px; border-radius:8px; display:inline-flex; align-items:center; gap:8px;
+    transition:transform .2s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
+  }
+  .btn-primary{ background:var(--navy); color:#fff; box-shadow:var(--shadow-md); }
+  .btn-primary:hover{ background:#16345e; transform:translateY(-3px) scale(1.02); box-shadow:var(--shadow-lg); }
+  .btn-ghost{ border:1px solid var(--border); color:var(--ink); background:#fff; }
+  .btn-ghost:hover{ border-color:var(--brass); color:var(--brass); transform:translateY(-3px); }
+
+  /* hero visual: floating orb + glass metric chips */
+  .hero-visual{ position:relative; height:440px; opacity:0; animation:fadeUp 1s ease .4s forwards; }
+  .orb{
+    position:absolute; left:50%; top:50%; width:300px; height:300px; border-radius:50%;
+    transform:translate(-50%,-50%);
+    background:conic-gradient(from 180deg, #0b2545, #1d4ed8, #a9822f, #0b2545);
+    filter:blur(2px);
+    animation:spin 16s linear infinite;
+    box-shadow:0 40px 90px -20px rgba(11,37,69,0.45);
+  }
+  .orb::before{
+    content:""; position:absolute; inset:14px; border-radius:50%;
+    background:radial-gradient(circle at 32% 28%, rgba(255,255,255,0.55), rgba(255,255,255,0) 45%), #0e2a52;
+  }
+  @keyframes spin{ to{ transform:translate(-50%,-50%) rotate(360deg); } }
+
+  .float-chip{
+    position:absolute; background:rgba(255,255,255,0.85); backdrop-filter:blur(10px);
+    border:1px solid var(--border); border-radius:11px; padding:12px 16px;
+    box-shadow:var(--shadow-lg); animation:bob 6s ease-in-out infinite;
+  }
+  .float-chip .fc-v{ font-family:'Newsreader',serif; font-weight:700; font-size:21px; color:var(--navy); }
+  .float-chip .fc-l{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; text-transform:uppercase; color:var(--ink-faint); margin-top:2px; }
+  .fc1{ top:6%; left:2%; animation-delay:0s; }
+  .fc2{ bottom:14%; left:-4%; animation-delay:1.2s; }
+  .fc3{ top:16%; right:0%; animation-delay:2.4s; }
+  .fc4{ bottom:2%; right:6%; animation-delay:3.6s; }
+  @keyframes bob{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-10px);} }
+  @media (max-width:900px){ .hero-visual{ display:none; } }
+
+  /* curved divider */
+  .curve{ display:block; width:100%; height:70px; margin-top:-2px; }
+
+  /* ---------- statement ---------- */
+  .statement{ padding:90px 6vw; text-align:center; background:var(--bg-tint-a); }
+  .statement blockquote{
+    font-family:'Newsreader',serif; font-style:italic; font-weight:500;
+    font-size:clamp(21px,2.6vw,31px); line-height:1.5; color:var(--ink);
+    max-width:840px; margin:0 auto 22px; letter-spacing:-0.01em;
+  }
+  .statement cite{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; font-style:normal; color:var(--brass); text-transform:uppercase; letter-spacing:0.08em; }
+
+  /* ---------- about ---------- */
+  .about-grid{ display:grid; grid-template-columns:1.1fr 0.9fr; gap:64px; align-items:start; }
+  .about-grid p{ font-size:16.5px; color:#344054; margin:0 0 16px; }
+  .about-grid strong{ color:var(--ink); }
+  .tag-list{ display:flex; flex-wrap:wrap; gap:9px; margin-top:26px; }
+  .tag{
+    font-size:12.5px; padding:8px 14px; border-radius:20px;
+    border:1px solid var(--border); color:var(--ink-soft); background:#fff;
+    transition:border-color .15s ease, color .15s ease, transform .15s ease, box-shadow .15s ease;
+  }
+  .tag:hover{ border-color:var(--brass); color:var(--brass); transform:translateY(-2px); box-shadow:var(--shadow-sm); }
+
+  .chart-box{ border:1px solid var(--border); border-radius:var(--radius); padding:30px 30px 26px; background:#fff; box-shadow:var(--shadow-lg); }
+  .chart-title{ font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink-faint); margin-bottom:24px; }
+  .bar-row{ margin-bottom:18px; }
+  .bar-row:last-child{ margin-bottom:0; }
+  .bar-row .br-label{ display:flex; justify-content:space-between; font-size:12.5px; color:var(--ink-soft); margin-bottom:7px; }
+  .bar-row .br-label b{ color:var(--ink); font-weight:600; }
+  .bar-track{ height:9px; border-radius:5px; background:#eef0f4; overflow:hidden; }
+  .bar-fill{ height:100%; border-radius:5px; width:0%; transition:width 1.3s cubic-bezier(.16,1,.3,1); }
+
+  /* ---------- experience ---------- */
+  #experience{ background:var(--bg-tint-a); }
+  .job{
+    display:grid; grid-template-columns:150px 1fr; gap:32px;
+    padding:34px 32px; border-radius:var(--radius); background:#fff; border:1px solid var(--border);
+    margin-bottom:20px; box-shadow:var(--shadow-sm); transition:box-shadow .25s ease, transform .25s ease, border-color .25s ease;
+  }
+  .job:hover{ box-shadow:var(--shadow-lg); transform:translateY(-3px); border-color:var(--brass-soft); }
+  .job:last-child{ margin-bottom:0; }
+  .job-date{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--navy-2); padding-top:3px; }
+  .job-title{ font-family:'Newsreader',serif; font-weight:600; font-size:21px; margin-bottom:3px; color:var(--ink); }
+  .job-org{ font-size:13.5px; color:var(--ink-soft); margin-bottom:15px; }
+  .job-org b{ color:var(--ink); font-weight:600; }
+  ul.bullets{ margin:0; padding-left:19px; }
+  ul.bullets li{ margin-bottom:8px; color:#344054; font-size:14.5px; }
+  ul.bullets li::marker{ color:var(--brass); }
+  ul.bullets li strong{ color:var(--ink); font-weight:600; }
+  @media (max-width:700px){ .job{ grid-template-columns:1fr; gap:10px; } }
+
+  /* ---------- projects ---------- */
+  .project-grid{ display:grid; grid-template-columns:1fr 1fr; gap:22px; perspective:1200px; }
+  .project-card{
+    background:#fff; border:1px solid var(--border); border-radius:var(--radius);
+    overflow:hidden; box-shadow:var(--shadow-sm);
+    transition:box-shadow .3s ease, transform .1s ease, border-color .3s ease;
+    transform-style:preserve-3d;
+  }
+  .project-card:hover{ box-shadow:var(--shadow-lg); border-color:var(--brass-soft); }
+  .pc-band{ height:64px; position:relative; overflow:hidden; }
+  .pc-band::after{ content:""; position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.12) 1px, transparent 1px); background-size:16px 16px; }
+  .pc-band.b1{ background:linear-gradient(120deg,#0b2545,#1d4ed8); }
+  .pc-band.b2{ background:linear-gradient(120deg,#0f9d78,#0b6e56); }
+  .pc-band.b3{ background:linear-gradient(120deg,#c98a1f,#a9822f); }
+  .pc-band.b4{ background:linear-gradient(120deg,#c2547a,#8a3358); }
+  .project-body{ padding:26px 26px 28px; }
+  .project-card .p-eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px; }
+  .project-card h3{ font-family:'Newsreader',serif; font-size:20px; font-weight:600; margin:0 0 12px; color:var(--ink); }
+  .project-card ul{ margin:0; padding-left:17px; }
+  .project-card ul li{ font-size:13.5px; color:#475467; margin-bottom:6px; }
+
+  /* ---------- achievements ---------- */
+  #achievements{ background:var(--bg-tint-b); }
+  .stat-row{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-bottom:46px; }
+  .stat{
+    background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:30px 22px;
+    box-shadow:var(--shadow-sm); transition:box-shadow .2s ease, transform .2s ease, border-color .2s ease;
+  }
+  .stat:hover{ box-shadow:var(--shadow-md); transform:translateY(-4px); border-color:var(--brass-soft); }
+  .stat .num{ font-family:'Newsreader',serif; font-size:42px; font-weight:700; color:var(--navy); letter-spacing:-0.02em; }
+  .stat .label{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-faint); margin-top:10px; }
+  .achieve-notes{ margin:0; padding-left:19px; max-width:74ch; }
+  .achieve-notes li{ font-size:14.5px; color:#344054; margin-bottom:9px; }
+  .achieve-notes li::marker{ color:var(--brass); }
+
+  /* ---------- education ---------- */
+  .edu-row{
+    display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px 20px;
+    border:1px solid var(--border); border-radius:var(--radius); padding:28px 30px; background:#fff;
+    box-shadow:var(--shadow-sm);
+  }
+  .edu-row .deg{ font-family:'Newsreader',serif; font-weight:600; font-size:19px; color:var(--ink); }
+  .edu-row .sch{ font-size:13.5px; color:var(--ink-soft); margin-top:4px; }
+  .edu-row .yrs{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--brass); }
+
+  /* ---------- contact ---------- */
+  #contact{
+    background:linear-gradient(165deg, #0a1f3d 0%, #0e2a52 100%);
+    color:#fff; text-align:center; position:relative; overflow:hidden;
+  }
+  #contact::before{
+    content:""; position:absolute; inset:0;
+    background:radial-gradient(700px 420px at 50% 0%, rgba(169,130,47,0.16), transparent 70%);
+  }
+  #contact .section-inner{ position:relative; }
+  #contact .kicker{ justify-content:center; }
+  #contact .kicker .label{ color:var(--brass-soft); }
+  #contact .kicker .idx{ border-color:rgba(255,255,255,0.25); color:var(--brass-soft); }
+  #contact h2.title{ color:#fff; }
+  .contact-lead{ font-size:17px; color:#c3cee0; max-width:54ch; margin:0 auto 42px; }
+  .contact-links{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; }
+  .clink{
+    display:flex; align-items:center; gap:9px;
+    font-family:'IBM Plex Mono',monospace; font-size:12.5px;
+    padding:13px 22px; border-radius:8px; border:1px solid rgba(255,255,255,0.22);
+    text-decoration:none; color:#fff;
+    transition:border-color .18s ease, background .18s ease, transform .18s ease;
+  }
+  .clink:hover{ border-color:var(--brass-soft); background:rgba(255,255,255,0.08); transform:translateY(-3px); }
+  .clink .k{ color:var(--brass-soft); font-weight:600; }
+
+  footer.foot{
+    padding:26px 6vw; text-align:center;
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--ink-faint);
+    border-top:1px solid var(--border);
+  }
+
+  .reveal{ opacity:0; transform:translateY(24px) scale(0.98); filter:blur(4px); transition:opacity .7s ease, transform .7s ease, filter .7s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0) scale(1); filter:blur(0); }
+  @media (prefers-reduced-motion:reduce){
+    .reveal, .hero-sub, .hero-actions, .hero-visual, .rv{ opacity:1 !important; transform:none !important; filter:none !important; animation:none !important; }
+    .orb{ animation:none; } .float-chip{ animation:none; }
+  }
+
+  a:focus-visible, .tag:focus-visible, .clink:focus-visible{ outline:2px solid var(--brass); outline-offset:2px; }
+
+  @media (max-width:900px){
+    section{ padding:80px 6vw; }
+    .hero{ padding:130px 6vw 60px; min-height:auto; }
+    .hero-inner{ grid-template-columns:1fr; }
+    .about-grid{ grid-template-columns:1fr; gap:38px; }
+    .project-grid{ grid-template-columns:1fr; }
+    .stat-row{ grid-template-columns:1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div id="cursor-ring"></div>
+<div id="cursor-dot"></div>
+
+<nav>
+  <div class="nav-brand">
+    <div class="mark">GB</div>
+    <div>
+      <div class="name">Gnanendra Bhaskar</div>
+      <div class="role">UI/UX &amp; Front-End</div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#achievements">Achievements</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <a class="nav-cta" href="mailto:gnanendra.mosali@gmail.com">Get in touch</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow-line"><span class="rule"></span>Senior Software Engineer · Hyderabad, India</div>
+      <h1>
+        <span class="rv" style="animation-delay:.05s">UI/UX</span> <span class="rv" style="animation-delay:.12s">design</span><br>
+        <span class="rv" style="animation-delay:.19s">and</span> <span class="rv grad" style="animation-delay:.26s">front-end</span><br>
+        <span class="rv" style="animation-delay:.35s">engineering.</span>
+      </h1>
+      <p class="hero-sub">I'm <strong>Gnanendra Bhaskar Mosali</strong>. Over 4+ years I've designed and shipped responsive, accessible interfaces for healthcare, education and power-sector platforms — from Figma file to production code.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#projects">View my work</a>
+        <a class="btn btn-ghost" href="https://www.figma.com/design/MBESTw4BFNyczS627FJWpm/Gnanendra-Bhaskar-%E2%80%93-UI-UX-Portfolio?node-id=28-9&t=tn56a6BKPFRRvxFB-1" target="_blank" rel="noopener">Figma portfolio</a>
+        <a class="btn btn-ghost" href="https://github.com/GnanendraBhaskar" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="orb"></div>
+      <div class="float-chip fc1"><div class="fc-v">4+</div><div class="fc-l">Years Exp.</div></div>
+      <div class="float-chip fc2"><div class="fc-v">50+</div><div class="fc-l">UI Screens</div></div>
+      <div class="float-chip fc3"><div class="fc-v">4+</div><div class="fc-l">Projects</div></div>
+      <div class="float-chip fc4"><div class="fc-v">0</div><div class="fc-l">Critical Bugs</div></div>
+    </div>
+  </div>
+</section>
+
+<svg class="curve" viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0,0 C480,70 960,70 1440,0 L1440,70 L0,70 Z" fill="#f4f7fb"/></svg>
+
+<!-- STATEMENT -->
+<section class="statement">
+  <blockquote>"Good interfaces disappear. The measure of the work isn't how it looks in a deck — it's whether people finish the task without thinking about the screen."</blockquote>
+  <cite>— Design philosophy</cite>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner reveal">
+    <div class="kicker"><span class="idx mono">01</span><span class="label">About</span></div>
+    <div class="about-grid">
+      <div>
+        <p>I specialize in building <strong>responsive, accessible, and high-performance user interfaces</strong> using modern front-end technologies and design tools. My work spans <strong>Rxseed</strong>, <strong>Edukares</strong> and the <strong>Nuclear Fuel Complex (NFC)</strong> at SoftHealth India, and <strong>APEPDCL</strong> power-sector applications at Allvy Software Solutions.</p>
+        <p>I move comfortably between design and code — sketching flows and components in Figma, then implementing them pixel-perfect in Angular, Bootstrap, PrimeNG and Tailwind CSS, without losing fidelity along the way.</p>
+        <div class="tag-list">
+          <span class="tag">Responsive Design</span><span class="tag">Design Systems</span>
+          <span class="tag">WCAG Accessibility</span><span class="tag">Component-Based UI</span>
+          <span class="tag">Mobile-First</span><span class="tag">Cross-Browser</span>
+        </div>
+      </div>
+
+      <div class="chart-box">
+        <div class="chart-title">Toolkit breakdown · 34 skills</div>
+        <div class="bar-row">
+          <div class="br-label"><b>UI/UX Skills</b><span>12</span></div>
+          <div class="bar-track"><div class="bar-fill" data-width="100%" style="background:var(--navy);"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="br-label"><b>Frontend Technologies</b><span>8</span></div>
+          <div class="bar-track"><div class="bar-fill" data-width="67%" style="background:var(--navy-2);"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="br-label"><b>Design &amp; Prototyping</b><span>5</span></div>
+          <div class="bar-track"><div class="bar-fill" data-width="42%" style="background:var(--brass);"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="br-label"><b>Version Control &amp; Tools</b><span>5</span></div>
+          <div class="bar-track"><div class="bar-fill" data-width="42%" style="background:#7c93b8;"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="br-label"><b>BI &amp; Visualization</b><span>4</span></div>
+          <div class="bar-track"><div class="bar-fill" data-width="33%" style="background:#c9b27e;"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-inner reveal">
+    <div class="kicker"><span class="idx mono">02</span><span class="label">Experience</span></div>
+    <h2 class="title">Where I've worked</h2>
+
+    <div class="job">
+      <div class="job-date mono">12/2025<br>— Present</div>
+      <div>
+        <div class="job-title">Senior Software Engineer</div>
+        <div class="job-org"><b>Allvy Software Solutions Pvt. Ltd.</b> · Hyderabad, India</div>
+        <ul class="bullets">
+          <li>Designed intuitive UI/UX layouts for enterprise web applications using <strong>Figma</strong>.</li>
+          <li>Developed responsive front-end interfaces using <strong>Angular, HTML5, CSS3, Bootstrap</strong> and <strong>Tailwind CSS</strong>.</li>
+          <li>Designed <strong>Power BI dashboard</strong> user interfaces and collaborated on data visualization layouts to improve reporting usability.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="job">
+      <div class="job-date mono">04/2021<br>— 12/2025</div>
+      <div>
+        <div class="job-title">Software Engineer</div>
+        <div class="job-org"><b>SoftHealth India Pvt. Ltd.</b> · Hyderabad, India</div>
+        <ul class="bullets">
+          <li>Designed and developed UI/UX solutions for enterprise applications including <strong>Rxseed, Edukares</strong> and <strong>Nuclear Fuel Complex (NFC)</strong>.</li>
+          <li>Created <strong>30+ responsive UI screens</strong> in Figma and implemented them using Bootstrap and PrimeNG.</li>
+          <li>Built reusable, accessible, cross-browser compatible UI components, ensuring high-quality, on-time delivery.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-inner reveal">
+    <div class="kicker"><span class="idx mono">03</span><span class="label">Selected work</span></div>
+    <h2 class="title">Projects &amp; products</h2>
+    <div class="project-grid">
+
+      <div class="project-card tilt">
+        <div class="pc-band b1"></div>
+        <div class="project-body">
+          <div class="p-eyebrow">Allvy Software Solutions</div>
+          <h3>APEPDCL — Power Distribution App</h3>
+          <ul>
+            <li>Responsive web &amp; mobile UI for consumer services and internal operational dashboards.</li>
+            <li>Figma UI/UX layouts following usability and accessibility standards.</li>
+            <li>Built with HTML5, JSP, CSS3, Bootstrap and Tailwind CSS.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="project-card tilt">
+        <div class="pc-band b2"></div>
+        <div class="project-body">
+          <div class="p-eyebrow">SoftHealth India</div>
+          <h3>Rxseed Software System</h3>
+          <ul>
+            <li>Healthcare UI for drug information management and reporting.</li>
+            <li>Converted Figma designs into responsive interfaces with Bootstrap and PrimeNG.</li>
+            <li>Delivered clear, accessible, user-friendly layouts.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="project-card tilt">
+        <div class="pc-band b3"></div>
+        <div class="project-body">
+          <div class="p-eyebrow">SoftHealth India</div>
+          <h3>Edukares Software System</h3>
+          <ul>
+            <li>UI/UX for student data and institutional workflow management.</li>
+            <li>Responsive front-end modules built with Bootstrap and PrimeNG.</li>
+            <li>Consistent, cross-browser compatible UI behavior.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="project-card tilt">
+        <div class="pc-band b4"></div>
+        <div class="project-body">
+          <div class="p-eyebrow">SoftHealth India</div>
+          <h3>Nuclear Fuel Complex (NFC)</h3>
+          <ul>
+            <li>Interactive Figma prototypes for membership card and hospital management systems.</li>
+            <li>Refined user journeys and workflows with stakeholders.</li>
+            <li>Delivered production-ready, accessibility-compliant modules.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS + EDUCATION -->
+<section id="achievements">
+  <div class="section-inner reveal">
+    <div class="kicker"><span class="idx mono">04</span><span class="label">Impact</span></div>
+    <h2 class="title">Key achievements</h2>
+    <div class="stat-row">
+      <div class="stat"><div class="num" data-count="4" data-suffix="+">0</div><div class="label">Enterprise &amp; govt. projects</div></div>
+      <div class="stat"><div class="num" data-count="50" data-suffix="+">0</div><div class="label">Accessible UI screens shipped</div></div>
+      <div class="stat"><div class="num" data-count="4" data-suffix="+">0</div><div class="label">Years of experience</div></div>
+      <div class="stat"><div class="num" data-count="0" data-suffix="">0</div><div class="label">Critical defects at delivery</div></div>
+    </div>
+    <ul class="achieve-notes">
+      <li>Contributed to large-scale enterprise and government systems, including APEPDCL and Nuclear Fuel Complex (NFC), supporting critical operations.</li>
+      <li>Delivered 50+ responsive, accessible UI screens across healthcare, education and power-sector platforms using Figma, Bootstrap, PrimeNG and Tailwind CSS.</li>
+      <li>Consistently met project timelines with zero critical UI defects at delivery, maintaining high client satisfaction.</li>
+    </ul>
+
+    <div style="height:50px;"></div>
+    <div class="kicker"><span class="idx mono">05</span><span class="label">Education</span></div>
+    <div class="edu-row">
+      <div>
+        <div class="deg">Bachelor of Science — B.Sc. (M.P.Cs.)</div>
+        <div class="sch">Vijaya Jyothi Degree College, Guntur</div>
+      </div>
+      <div class="yrs">2015 — 2018</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner reveal">
+    <div class="kicker"><span class="idx mono">06</span><span class="label">Contact</span></div>
+    <h2 class="title">Let's build something together.</h2>
+    <p class="contact-lead">Open to Senior UI/UX &amp; Front-End roles. Reach out directly, or review my portfolio and code first.</p>
+    <div class="contact-links">
+      <a class="clink" href="mailto:gnanendra.mosali@gmail.com"><span class="k">@</span> gnanendra.mosali@gmail.com</a>
+      <a class="clink" href="tel:+919160577841"><span class="k">tel</span> +91-9160577841</a>
+      <a class="clink" href="https://www.linkedin.com/in/gnanendra-bhaskar-mosali-4775831ab/" target="_blank" rel="noopener"><span class="k">in</span> LinkedIn</a>
+      <a class="clink" href="https://www.figma.com/design/MBESTw4BFNyczS627FJWpm/Gnanendra-Bhaskar-%E2%80%93-UI-UX-Portfolio?node-id=28-9&t=tn56a6BKPFRRvxFB-1" target="_blank" rel="noopener"><span class="k">fi</span> Figma Portfolio</a>
+      <a class="clink" href="https://github.com/GnanendraBhaskar" target="_blank" rel="noopener"><span class="k">gh</span> GitHub</a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  Gnanendra Bhaskar Mosali · Hyderabad, India · updated aug 2026
+</footer>
+
+<script>
+  // scroll progress
+  const progress = document.getElementById('progress');
+  window.addEventListener('scroll', ()=>{
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    progress.style.width = scrolled + '%';
+  });
+
+  // custom cursor
+  const ring = document.getElementById('cursor-ring');
+  const dot = document.getElementById('cursor-dot');
+  let rx=0, ry=0, mx=0, my=0;
+  if(matchMedia('(pointer:fine)').matches){
+    window.addEventListener('mousemove', (e)=>{
+      mx = e.clientX; my = e.clientY;
+      dot.style.left = mx+'px'; dot.style.top = my+'px';
+    });
+    function loop(){
+      rx += (mx-rx)*0.18; ry += (my-ry)*0.18;
+      ring.style.left = rx+'px'; ring.style.top = ry+'px';
+      requestAnimationFrame(loop);
+    }
+    loop();
+    document.querySelectorAll('a,button,.tag').forEach(el=>{
+      el.addEventListener('mouseenter', ()=>{ ring.style.width='54px'; ring.style.height='54px'; ring.style.borderColor='rgba(169,130,47,0.9)'; });
+      el.addEventListener('mouseleave', ()=>{ ring.style.width='34px'; ring.style.height='34px'; ring.style.borderColor='rgba(169,130,47,0.55)'; });
+    });
+  }
+
+  // scroll reveal
+  const els = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  els.forEach(el=>io.observe(el));
+
+  // bar chart fill
+  const bars = document.querySelectorAll('.bar-fill');
+  const barIO = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.style.width = e.target.getAttribute('data-width'); barIO.unobserve(e.target); } });
+  }, { threshold: 0.4 });
+  bars.forEach(b=>barIO.observe(b));
+
+  // count-up stats
+  const counts = document.querySelectorAll('.num[data-count]');
+  const countIO = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const el = e.target;
+        const target = parseInt(el.getAttribute('data-count'),10);
+        const suffix = el.getAttribute('data-suffix') || '';
+        const dur = 1000; const start = performance.now();
+        function step(now){
+          const p = Math.min((now-start)/dur, 1);
+          const eased = 1 - Math.pow(1-p, 3);
+          el.textContent = Math.round(eased*target) + suffix;
+          if(p<1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+        countIO.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+  counts.forEach(c=>countIO.observe(c));
+
+  // 3D tilt on project cards
+  document.querySelectorAll('.project-card.tilt').forEach(card=>{
+    card.addEventListener('mousemove', (e)=>{
+      const r = card.getBoundingClientRect();
+      const px = (e.clientX - r.left)/r.width - 0.5;
+      const py = (e.clientY - r.top)/r.height - 0.5;
+      card.style.transform = `rotateY(${px*6}deg) rotateX(${-py*6}deg) translateY(-4px)`;
+    });
+    card.addEventListener('mouseleave', ()=>{ card.style.transform = 'rotateY(0) rotateX(0) translateY(0)'; });
+  });
+</script>
+
+</body>
+</html>
